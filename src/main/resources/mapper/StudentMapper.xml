@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace 唯一命名空间:对应你的mapper层接口的路径-->
+<mapper namespace="com.cy.mybatis_springboot.mapper.StudentMapper">
+    <!--封装结果集 在我们操作数据库时,尽量避免去使用"*"-->
+    <!--column:实体类对应的属性   property:表中对应的字段  jdbcType:表中字段对应的数据类型-->
+    <resultMap id="student" type="com.cy.mybatis_springboot.pojo.Student">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="baseSql">
+        id,name,age
+    </sql>
+
+    <insert id="addStudent">
+        INSERT INTO student (name,age) VALUES (#{name},#{age})
+    </insert>
+
+    <delete id="deleteStudent">
+        DELETE FROM student WHERE id = #{id}
+    </delete>
+
+    <update id="updateStudent">
+        UPDATE student SET name=#{name},age=#{age} WHERE id = #{id}
+    </update>
+
+    <select id="queryStudentById" resultMap="student">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student WHERE id = #{id}
+    </select>
+
+    <select id="queryAllStudent" resultMap="student">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student
+    </select>
+</mapper>
